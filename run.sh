@@ -10,6 +10,6 @@ if [ "${nasm_output}" != '' ]; then
 else
     echo "Compilation succeed!"
     read
-    qemu-system-x86_64 -nographic bin/boot.bin  
+    timeout --foreground 10 qemu-system-x86_64 -nographic -fda bin/boot.bin  
 fi
 
