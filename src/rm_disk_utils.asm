@@ -1,8 +1,12 @@
-; read_sectors_from_disk - read n sectors from disk start from second sector
+; Real mode disk utils
+[BITS 16]
+
+
+; rm_read_sectors_from_disk - read n sectors from disk start from second sector
 ; dh - number of sectors to read
 ; dl - drive
 ; ES:BX - the destination of the reading
-read_sectors:
+rm_read_sectors:
     pusha
     push dx
 
@@ -17,26 +21,26 @@ read_sectors:
     int 0x13
 
     ; check for error
-    jc read_sectors_disk_error
+    jc rm_read_sectors__disk_error
 
     ; check if read all sectors
     pop dx
     cmp dh, al
-    jne read_sectors_read_error
+    jne rm_read_sectors__read_error
 
-    read_sectors_end:
+    rm_read_sectors__end:
         popa
         ret
 
-    read_sectors_disk_error:
+    rm_read_sectors__disk_error:
         mov bx, DISK_ERROR_MSG
-        call print
-        jmp read_sectors_end
+        call rm_print
+        jmp rm_read_sectors__end
     
-    read_sectors_read_error:
+    rm_read_sectors__read_error:
         mov bx, READ_ERROR_MSG
-        call print
-        jmp read_sectors_end
+        call rm_print
+        jmp rm_read_sectors__end
 
 DISK_ERROR_MSG: 
     db 'Disk read: Error!', 0
