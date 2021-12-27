@@ -16,7 +16,7 @@ rm_read_sectors:
     mov dh, 0x00 ; head 0
     ; dl = drive number
 
-    ; call BIOS interrupt (13h/02)
+    ; call BIOS Read disk interrupt (13h/02h)
     mov ah, 0x02 ; Read Disk Sectors
     int 0x13
 
@@ -46,5 +46,3 @@ DISK_ERROR_MSG:
     db 'Disk read: Error!', 0
 READ_ERROR_MSG:
     db 'Disk read: Incorrect number of sectors read!', 0
-
-; TODO: print specific status error message
