@@ -1,4 +1,4 @@
-; all rm_utils
+; all real mode utils functions
 
 %include "utils/rm_utils/rm_print_utils.asm"
 %include "utils/rm_utils/rm_disk_utils.asm"
