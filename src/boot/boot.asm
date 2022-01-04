@@ -32,8 +32,8 @@ boot_start:
 ; Includes
 %include "utils/rm_utils/rm_utils.asm"
 %include "utils/pm_utils/pm_utils.asm"
-%include "boot/gdt.asm"
-%include "boot/switch_to_pm.asm"
+%include "gdt.asm"
+%include "switch_to_pm.asm"
 
 
 [BITS 16]
