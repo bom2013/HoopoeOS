@@ -19,7 +19,7 @@ boot_start:
     call rm_print
 
     ; wait second
-    mov bx, 1
+    mov bx, 2
     call rm_wait
 
     ; load kernel from disk
@@ -44,7 +44,7 @@ load_kernel:
     call rm_print
     
     ; wait second
-    mov bx, 1
+    mov bx, 2
     call rm_wait
 
     ; load kernel from disk
