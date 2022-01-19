@@ -1,25 +1,33 @@
+# call the configuration makefile
+include conf/config
+
 # src path prefix
 BOOT_SRC_PATH = src/boot
 KERNEL_SRC_PATH = src/kernel
 DRIVERS_SRC_PATH = src/drivers
+UTILS_SRC_PATH = src/utils
 
 # bin path prefix
 BOOT_BIN_PATH = bin/boot
 KERNEL_BIN_PATH = bin/kernel
 DRIVERS_BIN_PATH = bin/drivers
+UTILS_BIN_PATH = bin/utils
 DEBUG_BIN_PATH = bin/debug
 
 # wildcards for all .c and .h files
 KERNEL_C_SRC_FILES = $(wildcard $(KERNEL_SRC_PATH)/*.c)
 DRIVERS_C_SRC_FILES = $(wildcard $(DRIVERS_SRC_PATH)/*.c)
-KERNEL_OBJ_FILES := $(patsubst $(KERNEL_SRC_PATH)/%.c,$(KERNEL_BIN_PATH)/%.o,$(KERNEL_C_SRC_FILES))
-DRIVERS_OBJ_FILES := $(patsubst $(DRIVERS_SRC_PATH)/%.c,$(DRIVERS_BIN_PATH)/%.o,$(DRIVERS_C_SRC_FILES))
-ALL_OBJ = $(KERNEL_OBJ_FILES) $(DRIVERS_OBJ_FILES)
+UTILS_C_SRC_FILES = $(wildcard $(UTILS_SRC_PATH)/*.c)
+KERNEL_OBJ_FILES = $(patsubst $(KERNEL_SRC_PATH)/%.c,$(KERNEL_BIN_PATH)/%.o,$(KERNEL_C_SRC_FILES))
+DRIVERS_OBJ_FILES = $(patsubst $(DRIVERS_SRC_PATH)/%.c,$(DRIVERS_BIN_PATH)/%.o,$(DRIVERS_C_SRC_FILES))
+UTILS_OBJ_FILES = $(patsubst $(UTILS_SRC_PATH)/%.c,$(UTILS_BIN_PATH)/%.o,$(UTILS_C_SRC_FILES))
+ALL_OBJ = $(KERNEL_OBJ_FILES) $(DRIVERS_OBJ_FILES) $(UTILS_OBJ_FILES)
 
 # compilation\linking
 CC_PREFIX = /usr/local/i386elfgcc/bin/i386-elf-
 CC = $(CC_PREFIX)gcc
 LD = $(CC_PREFIX)ld
+CC_OPTION = -g -std=c11 -ffreestanding -iquote $(HOOPOE_OS_PATH)/src/
 
 # some kernel constant
 KERNEL_OFFSET = 0x1000
@@ -50,8 +58,7 @@ debug: all $(DEBUG_BIN_PATH)/kernel.elf
 
 disas: bin/kernel.dis
 	@nano $^
-
-
+	
 # create image file
 HoopoeOS.bin: $(BOOT_BIN_PATH)/boot.bin $(KERNEL_BIN_PATH)/kernel.bin
 	@echo "[*] Create image file"
@@ -73,15 +80,19 @@ $(KERNEL_BIN_PATH)/kernel_entry.o: $(KERNEL_SRC_PATH)/kernel_entry.asm
 	@nasm -f elf $< -o $@
 
 # compile kernel c files
-$(KERNEL_OBJ_FILES): $(KERNEL_C_SRC_FILES)
+$(KERNEL_BIN_PATH)/%.o: $(KERNEL_SRC_PATH)/%.c
 	@echo "[*] Compile kernel c files ($^)"
-	@$(CC) -g -std=c11 -ffreestanding -c -o $@ $<
+	@$(CC) $(CC_OPTION) -c $< -o $@ 
 
 # compile drivers c files
-$(DRIVERS_OBJ_FILES): $(DRIVERS_C_SRC_FILES)
+$(DRIVERS_BIN_PATH)/%.o: $(DRIVERS_SRC_PATH)/%.c
 	@echo "[*] Compile drivers c files ($^)"
-	@$(CC) -g -std=c11 -ffreestanding -c -o $@ $<
+	@$(CC) $(CC_OPTION) -c $< -o $@
 
+# compile utils c files
+$(UTILS_BIN_PATH)/%.o: $(UTILS_SRC_PATH)/%.c
+	@echo "[*] Compile utils c files ($^)"
+	@$(CC) $(CC_OPTION) -c $< -o $@ 
 
 # disassemble kernel.bin
 bin/kernel.dis: $(KERNEL_BIN_PATH)/kernel.bin
@@ -89,7 +100,7 @@ bin/kernel.dis: $(KERNEL_BIN_PATH)/kernel.bin
 	@ndisasm -b 32 $< > $@
 
 # create kernel.elf for debug symbol
-$(DEBUG_BIN_PATH)/kernel.elf: $(KERNEL_BIN_PATH)/kernel_entry.o $(KERNEL_BIN_PATH)/kernel.o
+$(DEBUG_BIN_PATH)/kernel.elf: $(KERNEL_BIN_PATH)/kernel_entry.o $(ALL_OBJ)
 	@echo "[*] Create $@"
 	@$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^
 
