@@ -1,6 +1,6 @@
 // VGA text mode driver
-#ifndef SCREEN_H
-#define SCREEN_H
+#ifndef DRIVERS_SCREEN_H_
+#define DRIVERS_SCREEN_H_
 
 // VGA constants
 #define VGA_BASE_ADDRESS 0xb8000
@@ -61,4 +61,4 @@ int kprintAt(char *message, char attr, int col, int row);
  */
 void kclear();
 
-#endif
+#endif // DRIVERS_SCREEN_H_

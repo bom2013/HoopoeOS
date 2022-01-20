@@ -1,12 +1,7 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef LIBC_CONSTANT_H_
+#define LIBC_CONSTANT_H_
 
 // define null
 #define NULL 0
 
-// define booleans
-#define bool _Bool
-#define true 1
-#define false 0
-
-#endif
+#endif // LIBC_CONSTANT_H_
