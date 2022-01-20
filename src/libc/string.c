@@ -1,5 +1,5 @@
 #include "string.h"
-#include "constant.h"
+#include "stddef.h"
 
 void *memcpy(void *destination, const void *source, int num)
 {
