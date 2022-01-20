@@ -5,23 +5,23 @@ include conf/config
 BOOT_SRC_PATH = src/boot
 KERNEL_SRC_PATH = src/kernel
 DRIVERS_SRC_PATH = src/drivers
-UTILS_SRC_PATH = src/utils
+LIBC_SRC_PATH = src/libc
 
 # bin path prefix
 BOOT_BIN_PATH = bin/boot
 KERNEL_BIN_PATH = bin/kernel
 DRIVERS_BIN_PATH = bin/drivers
-UTILS_BIN_PATH = bin/utils
+LIBC_BIN_PATH = bin/libc
 DEBUG_BIN_PATH = bin/debug
 
 # wildcards for all .c and .h files
 KERNEL_C_SRC_FILES = $(wildcard $(KERNEL_SRC_PATH)/*.c)
 DRIVERS_C_SRC_FILES = $(wildcard $(DRIVERS_SRC_PATH)/*.c)
-UTILS_C_SRC_FILES = $(wildcard $(UTILS_SRC_PATH)/*.c)
+LIBC_C_SRC_FILES = $(wildcard $(LIBC_SRC_PATH)/*.c)
 KERNEL_OBJ_FILES = $(patsubst $(KERNEL_SRC_PATH)/%.c,$(KERNEL_BIN_PATH)/%.o,$(KERNEL_C_SRC_FILES))
 DRIVERS_OBJ_FILES = $(patsubst $(DRIVERS_SRC_PATH)/%.c,$(DRIVERS_BIN_PATH)/%.o,$(DRIVERS_C_SRC_FILES))
-UTILS_OBJ_FILES = $(patsubst $(UTILS_SRC_PATH)/%.c,$(UTILS_BIN_PATH)/%.o,$(UTILS_C_SRC_FILES))
-ALL_OBJ = $(KERNEL_OBJ_FILES) $(DRIVERS_OBJ_FILES) $(UTILS_OBJ_FILES)
+LIBC_OBJ_FILES = $(patsubst $(LIBC_SRC_PATH)/%.c,$(LIBC_BIN_PATH)/%.o,$(LIBC_C_SRC_FILES))
+ALL_OBJ = $(KERNEL_OBJ_FILES) $(DRIVERS_OBJ_FILES) $(LIBC_OBJ_FILES)
 
 # compilation\linking
 CC_PREFIX = /usr/local/i386elfgcc/bin/i386-elf-
@@ -89,9 +89,9 @@ $(DRIVERS_BIN_PATH)/%.o: $(DRIVERS_SRC_PATH)/%.c
 	@echo "[*] Compile drivers c files ($^)"
 	@$(CC) $(CC_OPTION) -c $< -o $@
 
-# compile utils c files
-$(UTILS_BIN_PATH)/%.o: $(UTILS_SRC_PATH)/%.c
-	@echo "[*] Compile utils c files ($^)"
+# compile libc c files
+$(LIBC_BIN_PATH)/%.o: $(LIBC_SRC_PATH)/%.c
+	@echo "[*] Compile libc c files ($^)"
 	@$(CC) $(CC_OPTION) -c $< -o $@ 
 
 # disassemble kernel.bin
