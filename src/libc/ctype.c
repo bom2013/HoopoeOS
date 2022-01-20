@@ -1,4 +1,4 @@
-#include "type.h"
+#include "ctype.h"
 
 int isalnum(int c)
 {
@@ -66,4 +66,18 @@ int isxdigit(int c)
 {
     // 0-9, a-f, A-F
     return isdigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+}
+
+int tolower(int c)
+{
+    if (isupper(c))
+        return c + 32;
+    return c;
+}
+
+int toupper(int c)
+{
+    if (islower(c))
+        return c - 32;
+    return c;
 }

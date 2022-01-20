@@ -1,8 +1,9 @@
-// Simple implementation for ctype.h
+// Simple ctype.h implementation
 
-#ifndef LIBC_TYPE_H_
-#define LIBC_TYPE_H_
+#ifndef LIBC_CTYPE_H_
+#define LIBC_CTYPE_H_
 
+// Character classification functions
 int isalnum(int c);
 int isalpha(int c);
 int isblank(int c);
@@ -16,4 +17,8 @@ int isspace(int c);
 int isupper(int c);
 int isxdigit(int c);
 
-#endif // LIBC_TYPE_H_
+// Character conversion functions
+int tolower(int c);
+int toupper(int c);
+
+#endif // LIBC_CTYPE_H_
