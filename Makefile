@@ -27,7 +27,7 @@ ALL_OBJ = $(KERNEL_OBJ_FILES) $(DRIVERS_OBJ_FILES) $(LIBC_OBJ_FILES)
 CC_PREFIX = /usr/local/i386elfgcc/bin/i386-elf-
 CC = $(CC_PREFIX)gcc
 LD = $(CC_PREFIX)ld
-CC_OPTION = -g -std=c11 -ffreestanding -iquote $(HOOPOE_OS_PATH)/src/
+CC_OPTION = -Werror -g -std=c11 -ffreestanding -iquote $(HOOPOE_OS_PATH)/src/
 
 # some kernel constant
 KERNEL_OFFSET = 0x1000
