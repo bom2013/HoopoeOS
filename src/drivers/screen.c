@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "ports.h"
+#include "libc/string.h"
 
 // Internals functions
 int printChar(char c, char attr, int col, int row);
@@ -53,11 +54,13 @@ void kclear()
     const int screenSize = VGA_MAX_COLS * VGA_MAX_ROWS;
     for (int i = 0; i < screenSize; i++)
     {
+        // TODO: why not vgaMemory[i] = 0 ?
         vgaMemory[i * 2] = ' ';
         vgaMemory[i * 2 + 1] = VGA_COLOR_CODE_WHITE_ON_BLACK;
     }
     setCursorOffset(getOffsetFromColRow(0, 0));
 }
+
 /**
  * Internal function to print char to screen.
  * This function work directly with the video memory
@@ -101,6 +104,26 @@ int printChar(char c, char attr, int col, int row)
         vgaMemory[offset] = c;
         vgaMemory[offset + 1] = attr;
         offset += 2;
+    }
+
+    // if offset overflow the screen scroll down one line
+    if (offset >= VGA_MAX_ROWS * VGA_MAX_COLS * 2)
+    {
+        // copy each line to previous line
+        for (int i = 1; i < VGA_MAX_ROWS; i++)
+        {
+            memcpy(vgaMemory + getOffsetFromColRow(0, i - 1), vgaMemory + getOffsetFromColRow(0, i), VGA_MAX_COLS * 2);
+        }
+
+        // clear last line
+        unsigned char *lastLineVgaMemory = vgaMemory + getOffsetFromColRow(0, VGA_MAX_ROWS - 1);
+        for (int i = 0; i < VGA_MAX_COLS * 2; i++)
+        {
+            lastLineVgaMemory[i] = 0;
+        }
+
+        // move offset to the start of line
+        offset -= 2 * VGA_MAX_COLS;
     }
 
     // set and return the new cursor offset
