@@ -40,10 +40,19 @@
  * Print message to screen
  * 
  * @param message The message to print
+ * @return 0 if success or -1 if fail
+ */
+int kprint(char *message);
+
+/**
+ * Print message to screen with attribute
+ * Use VGA_COLOR_CODE_WHITE_ON_BLACK as char attribute
+ * 
+ * @param message The message to print
  * @param attr Print attribute, if null use VGA_COLOR_CODE_WHITE_ON_BLACK
  * @return 0 if success or -1 if fail
  */
-int kprint(char *message, char attr);
+int kprintWithAttr(char *message, char attr);
 
 /**
  * Print message to screen at `row` and `col`

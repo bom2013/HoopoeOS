@@ -1,6 +1,7 @@
 #include "screen.h"
 #include "ports.h"
 #include "libc/string.h"
+#include "libc/stddef.h"
 
 // Internals functions
 int printChar(char c, char attr, int col, int row);
@@ -12,9 +13,14 @@ int getColFromOffset(int offset);
 int getCursorOffset();
 void setCursorOffset(int offset);
 
-int kprint(char *message, char attr)
+int kprint(char *message)
 {
-    kprintAt(message, attr, -1, -1);
+    return kprintWithAttr(message, NULL);
+}
+
+int kprintWithAttr(char *message, char attr)
+{
+    return kprintAt(message, attr, -1, -1);
 }
 
 int kprintAt(char *message, char attr, int col, int row)
