@@ -13,3 +13,8 @@ Experimental Tiny Operating System
 - [ ] File system
 - [ ] syscalls
 - [ ] Basic shell
+
+## How to run
+I test the os on qemu, you need:
+* gcc and ld for 386
+* create conf/config makefile with `HOOPOE_OS_PATH` variable contatin path to project
