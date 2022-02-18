@@ -49,7 +49,7 @@ load_kernel:
 
     ; load kernel from disk
     mov bx, KERNEL_OFFSET ; destination
-    mov dh, 15            ; number of section to read
+    mov dh, 30            ; number of section to read
     mov dl, [BOOT_DRIVE]  ; drive number
     call rm_read_sectors
     

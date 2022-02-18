@@ -5,6 +5,40 @@
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
 
+char *EXCEPTION_MESSAGE[] = {
+        "Division By Zero",
+        "Debug",
+        "Non Maskable Interrupt",
+        "Breakpoint",
+        "Detected Overflow",
+        "Out of Bounds",
+        "Invalid Opcode",
+        "Device not available",
+        "Double Fault",
+        "Coprocessor Segment Overrun",
+        "Bad TSS",
+        "Segment Not Present",
+        "Stack-segment Fault",
+        "General Protection Fault",
+        "Page Fault",
+        "Reserved",
+        "x87 FPU error",
+        "Alignment Check",
+        "Machine Check",
+        "SIMD Floating-Point Exception",
+        "Virtualization",
+        "Control Protection",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved",
+        "Reserved"};
+
 void ISRInstall()
 {
     setIDTGateDescriptor(0, (uint32_t)isr0);
@@ -46,39 +80,6 @@ void ISRInstall()
 
 void ISRHandler(ISRStackRegisters_t regs)
 {
-    char *EXCEPTION_MESSAGE[] = {
-        "Division By Zero",
-        "Debug",
-        "Non Maskable Interrupt",
-        "Breakpoint",
-        "Detected Overflow",
-        "Out of Bounds",
-        "Invalid Opcode",
-        "Device not available",
-        "Double Fault",
-        "Coprocessor Segment Overrun",
-        "Bad TSS",
-        "Segment Not Present",
-        "Stack-segment Fault",
-        "General Protection Fault",
-        "Page Fault",
-        "Reserved",
-        "x87 FPU error",
-        "Alignment Check",
-        "Machine Check",
-        "SIMD Floating-Point Exception",
-        "Virtualization",
-        "Control Protection",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved"};
 
     kprint("received interrupt: ");
     char s[3];
