@@ -5,7 +5,7 @@
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
 
-char *EXCEPTION_MESSAGE[] = {
+const char *EXCEPTION_MESSAGE[] = {
         "Division By Zero",
         "Debug",
         "Non Maskable Interrupt",

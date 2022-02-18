@@ -13,17 +13,17 @@ int getColFromOffset(int offset);
 int getCursorOffset();
 void setCursorOffset(int offset);
 
-int kprint(char *message)
+int kprint(const char *message)
 {
     return kprintWithAttr(message, NULL);
 }
 
-int kprintWithAttr(char *message, char attr)
+int kprintWithAttr(const char *message, char attr)
 {
     return kprintAt(message, attr, -1, -1);
 }
 
-int kprintAt(char *message, char attr, int col, int row)
+int kprintAt(const char *message, char attr, int col, int row)
 {
     // get offset from col and row
     int offset;

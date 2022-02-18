@@ -42,7 +42,7 @@
  * @param message The message to print
  * @return 0 if success or -1 if fail
  */
-int kprint(char *message);
+int kprint(const char *message);
 
 /**
  * Print message to screen with attribute
@@ -52,7 +52,7 @@ int kprint(char *message);
  * @param attr Print attribute, if null use VGA_COLOR_CODE_WHITE_ON_BLACK
  * @return 0 if success or -1 if fail
  */
-int kprintWithAttr(char *message, char attr);
+int kprintWithAttr(const char *message, char attr);
 
 /**
  * Print message to screen at `row` and `col`
@@ -63,7 +63,7 @@ int kprintWithAttr(char *message, char attr);
  * @param attr Print attribute, if null use VGA_COLOR_CODE_WHITE_ON_BLACK
  * @return 0 if success or -1 if fail
  */
-int kprintAt(char *message, char attr, int col, int row);
+int kprintAt(const char *message, char attr, int col, int row);
 
 /**
  * Clear the screen
