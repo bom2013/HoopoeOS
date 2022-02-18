@@ -38,7 +38,7 @@ CC_OPTION = -Werror -g -std=c11 -ffreestanding -iquote $(HOOPOE_OS_PATH)/src/
 KERNEL_OFFSET = 0x1000
 
 
-all: HoopoeOS.bin
+all: create-bin-folders HoopoeOS.bin
 
 help:
 	@echo "make run - build and run the os"
@@ -63,7 +63,16 @@ debug: all $(DEBUG_BIN_PATH)/kernel.elf
 
 disas: bin/kernel.dis
 	@nano $^
-	
+
+create-bin-folders:
+	@(ls bin >> /dev/null 2>&1 || echo "[*] Create bin folders")
+	@mkdir -p bin/boot
+	@mkdir -p bin/kernel
+	@mkdir -p bin/drivers
+	@mkdir -p bin/cpu
+	@mkdir -p bin/libc
+	@mkdir -p bin/debug
+
 # create image file
 HoopoeOS.bin: $(BOOT_BIN_PATH)/boot.bin $(KERNEL_BIN_PATH)/kernel.bin
 	@echo "[*] Create image file"
