@@ -102,6 +102,24 @@ extern void isr30();
 // Reserved
 extern void isr31();
 
+// IRQs
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
+
 /*
     Struct for aggregates registers that pushed when isr is called
     The order of pushes (from bottom to up):
@@ -120,5 +138,9 @@ typedef struct
 
 void ISRInstall();
 void ISRHandler(ISRStackRegisters_t regs);
+
+typedef void (*isr_t)(ISRStackRegisters_t);
+void registerInterruptHandler(uint8_t interruptNumber, isr_t handler);
+void IRQHandler(ISRStackRegisters_t regs);
 
 #endif // CPU_ISR_H_

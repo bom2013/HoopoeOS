@@ -1,46 +1,50 @@
 #include "isr.h"
 #include "idt.h"
-#include "drivers/screen.h"
 #include "libc/stdint.h"
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
+#include "drivers/screen.h"
+#include "pic.h"
+
+isr_t interruptHandlers[256];
 
 const char *EXCEPTION_MESSAGE[] = {
-        "Division By Zero",
-        "Debug",
-        "Non Maskable Interrupt",
-        "Breakpoint",
-        "Detected Overflow",
-        "Out of Bounds",
-        "Invalid Opcode",
-        "Device not available",
-        "Double Fault",
-        "Coprocessor Segment Overrun",
-        "Bad TSS",
-        "Segment Not Present",
-        "Stack-segment Fault",
-        "General Protection Fault",
-        "Page Fault",
-        "Reserved",
-        "x87 FPU error",
-        "Alignment Check",
-        "Machine Check",
-        "SIMD Floating-Point Exception",
-        "Virtualization",
-        "Control Protection",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved",
-        "Reserved"};
+    "Division By Zero",
+    "Debug",
+    "Non Maskable Interrupt",
+    "Breakpoint",
+    "Detected Overflow",
+    "Out of Bounds",
+    "Invalid Opcode",
+    "Device not available",
+    "Double Fault",
+    "Coprocessor Segment Overrun",
+    "Bad TSS",
+    "Segment Not Present",
+    "Stack-segment Fault",
+    "General Protection Fault",
+    "Page Fault",
+    "Reserved",
+    "x87 FPU error",
+    "Alignment Check",
+    "Machine Check",
+    "SIMD Floating-Point Exception",
+    "Virtualization",
+    "Control Protection",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved",
+    "Reserved"};
 
 void ISRInstall()
 {
+    // install first 32 ISRs
     setIDTGateDescriptor(0, (uint32_t)isr0);
     setIDTGateDescriptor(1, (uint32_t)isr1);
     setIDTGateDescriptor(2, (uint32_t)isr2);
@@ -74,6 +78,27 @@ void ISRInstall()
     setIDTGateDescriptor(30, (uint32_t)isr30);
     setIDTGateDescriptor(31, (uint32_t)isr31);
 
+    // remap PIC
+    remapPIC(0x20, 0x28);
+
+    // install IRQs
+    setIDTGateDescriptor(32, (uint32_t)irq0);
+    setIDTGateDescriptor(33, (uint32_t)irq1);
+    setIDTGateDescriptor(34, (uint32_t)irq2);
+    setIDTGateDescriptor(35, (uint32_t)irq3);
+    setIDTGateDescriptor(36, (uint32_t)irq4);
+    setIDTGateDescriptor(37, (uint32_t)irq5);
+    setIDTGateDescriptor(38, (uint32_t)irq6);
+    setIDTGateDescriptor(39, (uint32_t)irq7);
+    setIDTGateDescriptor(40, (uint32_t)irq8);
+    setIDTGateDescriptor(41, (uint32_t)irq9);
+    setIDTGateDescriptor(42, (uint32_t)irq10);
+    setIDTGateDescriptor(43, (uint32_t)irq11);
+    setIDTGateDescriptor(44, (uint32_t)irq12);
+    setIDTGateDescriptor(45, (uint32_t)irq13);
+    setIDTGateDescriptor(46, (uint32_t)irq14);
+    setIDTGateDescriptor(47, (uint32_t)irq15);
+
     // Load idt to idtr
     setIDT();
 }
@@ -88,4 +113,22 @@ void ISRHandler(ISRStackRegisters_t regs)
     kprint("\n");
     kprint(EXCEPTION_MESSAGE[regs.interrupt_number]);
     kprint("\n");
+}
+
+void registerInterruptHandler(uint8_t interruptNumber, isr_t handler)
+{
+    interruptHandlers[interruptNumber] = handler;
+}
+
+void IRQHandler(ISRStackRegisters_t regs)
+{
+    // send EOI to the PIC to enable further interrupt send
+    sendEOI(regs.interrupt_number - 32);
+
+    // call the specific interrupt handler function
+    if (interruptHandlers[regs.interrupt_number] != 0)
+    {
+        isr_t handler = interruptHandlers[regs.interrupt_number];
+        handler(regs);
+    }
 }
