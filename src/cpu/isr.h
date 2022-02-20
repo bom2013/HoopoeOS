@@ -5,6 +5,24 @@
 
 #include "libc/stdint.h"
 
+// IRQs number macro
+#define IRQ0_GATE_NUMBER 32
+#define IRQ1_GATE_NUMBER 33
+#define IRQ2_GATE_NUMBER 34
+#define IRQ3_GATE_NUMBER 35
+#define IRQ4_GATE_NUMBER 36
+#define IRQ5_GATE_NUMBER 37
+#define IRQ6_GATE_NUMBER 38
+#define IRQ7_GATE_NUMBER 39
+#define IRQ8_GATE_NUMBER 40
+#define IRQ9_GATE_NUMBER 41
+#define IRQ10_GATE_NUMBER 42
+#define IRQ11_GATE_NUMBER 43
+#define IRQ12_GATE_NUMBER 44
+#define IRQ13_GATE_NUMBER 45
+#define IRQ14_GATE_NUMBER 46
+#define IRQ15_GATE_NUMBER 47
+
 // ISRs for first 32 interrupts
 // Division By Zero
 extern void isr0();

@@ -82,25 +82,25 @@ void ISRInstall()
     remapPIC(0x20, 0x28);
 
     // install IRQs
-    setIDTGateDescriptor(32, (uint32_t)irq0);
-    setIDTGateDescriptor(33, (uint32_t)irq1);
-    setIDTGateDescriptor(34, (uint32_t)irq2);
-    setIDTGateDescriptor(35, (uint32_t)irq3);
-    setIDTGateDescriptor(36, (uint32_t)irq4);
-    setIDTGateDescriptor(37, (uint32_t)irq5);
-    setIDTGateDescriptor(38, (uint32_t)irq6);
-    setIDTGateDescriptor(39, (uint32_t)irq7);
-    setIDTGateDescriptor(40, (uint32_t)irq8);
-    setIDTGateDescriptor(41, (uint32_t)irq9);
-    setIDTGateDescriptor(42, (uint32_t)irq10);
-    setIDTGateDescriptor(43, (uint32_t)irq11);
-    setIDTGateDescriptor(44, (uint32_t)irq12);
-    setIDTGateDescriptor(45, (uint32_t)irq13);
-    setIDTGateDescriptor(46, (uint32_t)irq14);
-    setIDTGateDescriptor(47, (uint32_t)irq15);
+    setIDTGateDescriptor(IRQ0_GATE_NUMBER, (uint32_t)irq0);
+    setIDTGateDescriptor(IRQ1_GATE_NUMBER, (uint32_t)irq1);
+    setIDTGateDescriptor(IRQ2_GATE_NUMBER, (uint32_t)irq2);
+    setIDTGateDescriptor(IRQ3_GATE_NUMBER, (uint32_t)irq3);
+    setIDTGateDescriptor(IRQ4_GATE_NUMBER, (uint32_t)irq4);
+    setIDTGateDescriptor(IRQ5_GATE_NUMBER, (uint32_t)irq5);
+    setIDTGateDescriptor(IRQ6_GATE_NUMBER, (uint32_t)irq6);
+    setIDTGateDescriptor(IRQ7_GATE_NUMBER, (uint32_t)irq7);
+    setIDTGateDescriptor(IRQ8_GATE_NUMBER, (uint32_t)irq8);
+    setIDTGateDescriptor(IRQ9_GATE_NUMBER, (uint32_t)irq9);
+    setIDTGateDescriptor(IRQ10_GATE_NUMBER, (uint32_t)irq10);
+    setIDTGateDescriptor(IRQ11_GATE_NUMBER, (uint32_t)irq11);
+    setIDTGateDescriptor(IRQ12_GATE_NUMBER, (uint32_t)irq12);
+    setIDTGateDescriptor(IRQ13_GATE_NUMBER, (uint32_t)irq13);
+    setIDTGateDescriptor(IRQ14_GATE_NUMBER, (uint32_t)irq14);
+    setIDTGateDescriptor(IRQ15_GATE_NUMBER, (uint32_t)irq15);
 
     // Load idt to idtr
-    setIDT();
+    loadIDT();
 }
 
 void ISRHandler(ISRStackRegisters_t regs)
