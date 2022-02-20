@@ -34,6 +34,9 @@ typedef uint32_t uintmax_t;
 #define UINTMAX_MAX UINT32_MAX
 
 // Function-like macros
+#define GET_LOW8(address) (uint8_t)((address)&0xFF)
+#define GET_HIGH8(address) (uint8_t)(((address) >> 8) & 0xFF)
+
 #define GET_LOW16(address) (uint16_t)((address)&0xFFFF)
 #define GET_HIGH16(address) (uint16_t)(((address) >> 16) & 0xFFFF)
 
