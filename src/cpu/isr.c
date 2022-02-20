@@ -1,10 +1,10 @@
 #include "isr.h"
 #include "idt.h"
+#include "drivers/screen.h"
+#include "pic.h"
 #include "libc/stdint.h"
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
-#include "drivers/screen.h"
-#include "pic.h"
 
 isr_t interruptHandlers[256];
 
