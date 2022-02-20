@@ -43,8 +43,17 @@ typedef struct
 idt_gate_descriptor_t idt[NUMBER_OF_IDT_ENTRIES];
 idt_register_t idtr;
 
-// Functions
+/**
+ * Set IDT gate to ISR
+ *
+ * @param descriptorNumber IDT gate descriptor number
+ * @param ISREntryPoint Entry point of the ISR
+ */
 void setIDTGateDescriptor(int descriptorNumber, uint32_t ISREntryPoint);
-void setIDT();
+
+/**
+ * Load the IDT
+ */
+void loadIDT();
 
 #endif // CPU_IDT_H_

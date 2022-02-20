@@ -11,7 +11,7 @@ void setIDTGateDescriptor(int descriptorNumber, uint32_t ISREntryPoint)
     idt[descriptorNumber].high_offset = GET_HIGH16(ISREntryPoint);
 }
 
-void setIDT()
+void loadIDT()
 {
     // load the idt array to the idtr
     idtr.offset = (uint32_t)&idt;
