@@ -11,5 +11,5 @@ void kmain()
     kprint("Enter kmain...\n");
 
     __asm__ __volatile__("sti");
-    initTimer(50);
+    initTimer(20);
 }

@@ -10,11 +10,14 @@ uint32_t ticks = 0;
 static void timerInterruptHandler(ISRStackRegisters_t regs)
 {
     ticks++;
-    kprint("Ticks: ");
-    char asciiTicks[256];
-    itoa(ticks, asciiTicks, 10);
-    kprint(asciiTicks);
-    kprint("\n");
+    if (ticks % 20 == 0)
+    {
+        kprint("Ticks: ");
+        char asciiTicks[256];
+        itoa(ticks, asciiTicks, 10);
+        kprint(asciiTicks);
+        kprint("\n");
+    }
 }
 
 void initTimer(uint32_t frequency)
