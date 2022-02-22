@@ -103,6 +103,11 @@ void ISRInstall()
     loadIDT();
 }
 
+void registerInterruptHandler(uint8_t interruptNumber, isr_t handler)
+{
+    interruptHandlers[interruptNumber] = handler;
+}
+
 void ISRHandler(ISRStackRegisters_t regs)
 {
 
@@ -115,20 +120,15 @@ void ISRHandler(ISRStackRegisters_t regs)
     kprint("\n");
 }
 
-void registerInterruptHandler(uint8_t interruptNumber, isr_t handler)
-{
-    interruptHandlers[interruptNumber] = handler;
-}
-
 void IRQHandler(ISRStackRegisters_t regs)
 {
+    // send EOI to the PIC to enable further interrupt send
+    sendEOI(regs.interrupt_number - 32);
+
     // call the specific interrupt handler function
     if (interruptHandlers[regs.interrupt_number] != 0)
     {
         isr_t handler = interruptHandlers[regs.interrupt_number];
         handler(regs);
     }
-
-    // send EOI to the PIC to enable further interrupt send
-    sendEOI(regs.interrupt_number - 32);
 }
