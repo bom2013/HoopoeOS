@@ -53,4 +53,11 @@
  */
 void initTimer(uint32_t frequency);
 
+/**
+ * Wait ticks
+ *
+ * @param ticks Number of ticks to wait
+ */
+void wait(uint32_t ticks);
+
 #endif // CPU_TIMER_H_

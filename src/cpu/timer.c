@@ -5,16 +5,16 @@
 #include "drivers/screen.h"
 #include "drivers/ports.h"
 
-uint32_t ticks = 0;
+uint32_t timerTicks = 0;
 
 static void timerInterruptHandler(ISRStackRegisters_t regs)
 {
-    ticks++;
-    if (ticks % 20 == 0)
+    timerTicks++;
+    if (timerTicks % 20 == 0)
     {
         kprint("Ticks: ");
         char asciiTicks[256];
-        itoa(ticks, asciiTicks, 10);
+        itoa(timerTicks, asciiTicks, 10);
         kprint(asciiTicks);
         kprint("\n");
     }
@@ -34,4 +34,12 @@ void initTimer(uint32_t frequency)
     portWriteByte(PIT_MODE_REGISTER_PORT, PIT_MODE_REGISTER_SELECT_CHANNEL_0 | PIT_MODE_REGISTER_ACCESS_MODE_BYTE | PIT_MODE_REGISTER_OPERATING_MODE_3 | PIT_MODE_REGISTER_BINARY);
     portWriteByte(PIT_CHANNEL0_PORT, low);
     portWriteByte(PIT_CHANNEL0_PORT, high);
+}
+
+void wait(uint32_t ticks)
+{
+    uint32_t endTicks = timerTicks + ticks;
+    while (timerTicks < endTicks)
+    {
+    };
 }
