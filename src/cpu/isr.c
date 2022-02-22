@@ -1,7 +1,7 @@
 #include "isr.h"
-#include "idt.h"
+#include "cpu/idt.h"
+#include "cpu/devices/pic.h"
 #include "drivers/screen.h"
-#include "pic.h"
 #include "libc/stdint.h"
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
@@ -128,7 +128,7 @@ void IRQHandler(ISRStackRegisters_t regs)
         isr_t handler = interruptHandlers[regs.interrupt_number];
         handler(regs);
     }
-    
+
     // send EOI to the PIC to enable further interrupt send
     sendEOI(regs.interrupt_number - 32);
 }

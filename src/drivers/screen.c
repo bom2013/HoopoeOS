@@ -1,5 +1,5 @@
 #include "screen.h"
-#include "ports.h"
+#include "cpu/ports.h"
 #include "libc/string.h"
 #include "libc/stddef.h"
 
@@ -71,12 +71,12 @@ void kclear()
  * Internal function to print char to screen.
  * This function work directly with the video memory
  * Set cursor location to next char offset
- * 
+ *
  * @param c The char to print
  * @param attr The attribute for the char (if 0 use VGA_COLOR_CODE_WHITE_ON_BLACK)
  * @param row The row to print to (if -1 use current cursor row)
  * @param col The col to print to (if -1 use current cursor col)
- * 
+ *
  * @return Next char offset or -1 if failed
  */
 int printChar(char c, char attr, int col, int row)

@@ -1,7 +1,7 @@
 // Port utils
 
-#ifndef DRIVERS_PORTS_H_
-#define DRIVERS_PORTS_H_
+#ifndef CPU_PORTS_H_
+#define CPU_PORTS_H_
 
 /**
  * Read byte from port
@@ -35,4 +35,4 @@ void portWriteByte(unsigned short port, unsigned char byte);
  */
 unsigned short portWriteWord(unsigned short port, unsigned short word);
 
-#endif // DRIVERS_PORTS_H_
+#endif // CPU_PORTS_H_

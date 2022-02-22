@@ -1,8 +1,8 @@
 #include "keyboard.h"
-#include "screen.h"
 #include "cpu/isr.h"
-#include "drivers/ports.h"
-#include "drivers/ps2.h"
+#include "cpu/ports.h"
+#include "cpu/devices/ps2.h"
+#include "drivers/screen.h"
 #include "libc/stdint.h"
 #include "libc/stdlib.h"
 
