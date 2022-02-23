@@ -6,7 +6,6 @@ BOOT_SRC_PATH = src/boot
 KERNEL_SRC_PATH = src/kernel
 DRIVERS_SRC_PATH = src/drivers
 CPU_SRC_PATH = src/cpu
-CPU_DEVICES_SRC_PATH = src/cpu/devices
 LIBC_SRC_PATH = src/libc
 
 # bin path prefix
@@ -14,21 +13,18 @@ BOOT_BIN_PATH = bin/boot
 KERNEL_BIN_PATH = bin/kernel
 DRIVERS_BIN_PATH = bin/drivers
 CPU_BIN_PATH = bin/cpu
-CPU_DEVICES_BIN_PATH = bin/cpu/devices
 LIBC_BIN_PATH = bin/libc
 DEBUG_BIN_PATH = bin/debug
 
 # wildcards for all .c and .h files
 KERNEL_C_SRC_FILES = $(wildcard $(KERNEL_SRC_PATH)/*.c)
 DRIVERS_C_SRC_FILES = $(wildcard $(DRIVERS_SRC_PATH)/*.c)
-CPU_C_SRC_FILES = $(wildcard $(CPU_SRC_PATH)/*.c)
-CPU_DEVICES_C_SRC_FILES = $(wildcard $(CPU_DEVICES_SRC_PATH)/*.c)
+CPU_C_SRC_FILES = $(wildcard $(CPU_SRC_PATH)/*.c) $(wildcard $(CPU_SRC_PATH)/*/*.c) 
 LIBC_C_SRC_FILES = $(wildcard $(LIBC_SRC_PATH)/*.c)
 
 KERNEL_OBJ_FILES = $(patsubst $(KERNEL_SRC_PATH)/%.c,$(KERNEL_BIN_PATH)/%.o,$(KERNEL_C_SRC_FILES))
 DRIVERS_OBJ_FILES = $(patsubst $(DRIVERS_SRC_PATH)/%.c,$(DRIVERS_BIN_PATH)/%.o,$(DRIVERS_C_SRC_FILES))
 CPU_OBJ_FILES = $(patsubst $(CPU_SRC_PATH)/%.c,$(CPU_BIN_PATH)/%.o,$(CPU_C_SRC_FILES)) $(CPU_BIN_PATH)/interrupt.o
-CPU_DEVICES_OBJ_FILES = $(patsubst $(CPU_DEVICES_SRC_PATH)/%.c,$(CPU_DEVICES_BIN_PATH)/%.o,$(CPU_DEVICES_C_SRC_FILES))
 LIBC_OBJ_FILES = $(patsubst $(LIBC_SRC_PATH)/%.c,$(LIBC_BIN_PATH)/%.o,$(LIBC_C_SRC_FILES))
 ALL_OBJ = $(KERNEL_OBJ_FILES) $(DRIVERS_OBJ_FILES) $(CPU_OBJ_FILES) $(CPU_DEVICES_OBJ_FILES) $(LIBC_OBJ_FILES)
 
@@ -116,11 +112,6 @@ $(CPU_BIN_PATH)/interrupt.o: $(CPU_SRC_PATH)/interrupt.asm
 # compile machine-dependent c files
 $(CPU_BIN_PATH)/%.o: $(CPU_SRC_PATH)/%.c
 	@echo "[*] Compile machine-dependent c files ($^)"
-	@$(CC) $(CC_OPTION) -c $< -o $@
-
-# compile machine-dependent devices c files
-$(CPU_DEVICES_BIN_PATH)/%.o: $(CPU_DEVICES_C_SRC_FILES)/%.c
-	@echo "[*] Compile machine-dependent devices c files ($^)"
 	@$(CC) $(CC_OPTION) -c $< -o $@
 
 # compile libc c files
