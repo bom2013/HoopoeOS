@@ -1,7 +1,6 @@
 #include "cpu/isr.h"
 #include "drivers/timer.h"
 #include "drivers/keyboard.h"
-#include "drivers/scancode.h"
 #include "drivers/screen.h"
 #include "libc/stddef.h"
 #include "libc/stdbool.h"

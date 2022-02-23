@@ -5,7 +5,7 @@ Experimental Tiny Operating System
 - [x] Bootloader
 - [x] Moving to protected mode
 - [x] C basic kernel
-- [ ] Basic IO drivers
+- [x] Basic IO drivers
 - [ ] Segmenation
 - [ ] Interrupt
 - [ ] Paging
