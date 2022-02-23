@@ -6,7 +6,7 @@ Experimental Tiny Operating System
 - [x] Switch to protected mode
     - [x] GDT
 - [x] C basic kernel
-- Drivers
+- [x] Basic Drivers
     - [x] Basic IO drivers
         - [x] VGA driver
         - [x] Keyboard
@@ -21,10 +21,13 @@ Experimental Tiny Operating System
 - [ ] File system
 - [ ] User Space
     - [ ] Switch to user mode
-    - [ ] Loader
     - [ ] System calls
-    - [ ] Fork and Execute
     - [ ] Shell
+- [ ] Process managment
+    - [ ] Loader
+    - [ ] Scheduling
+    - [ ] Fork and Execute
+- [ ] IPC
 - [ ] OS specific compiler
     - [ ] OS Specific Toolchain
     - [ ] libc
