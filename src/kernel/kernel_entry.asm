@@ -7,10 +7,10 @@ global _start
 
 _start:
     ; reference for kmain() in kernel.c, linker will resolve this
-    [extern kmain]
+    [extern _kmain]
 
     ; jump to kmain() in kernel.c
-    call kmain
+    call _kmain
 
     ; infinite loop after kernel done
     jmp $
