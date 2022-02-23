@@ -1,9 +1,9 @@
 #include "ports.h"
+#include "libc/stdint.h"
 
-// port byte in\out
-unsigned char portReadByte(unsigned short port)
+uint8_t portReadByte(uint16_t port)
 {
-    unsigned char res;
+    uint8_t res;
     __asm__ volatile(
         "inb %%dx, %%al"
         : "=a"(res) // mov the result(al) to res
@@ -12,19 +12,9 @@ unsigned char portReadByte(unsigned short port)
     return res;
 }
 
-void portWriteByte(unsigned short port, unsigned char byte)
+uint16_t portReadWord(uint16_t port)
 {
-    __asm__ volatile(
-        "outb %%al, %%dx"
-        :                      // no input
-        : "a"(byte), "d"(port) // byte to write and port
-    );
-}
-
-// port word int\out
-unsigned short portReadWord(unsigned short port)
-{
-    unsigned short res;
+    uint16_t res;
     __asm__ volatile(
         "in %%dx, %%ax"
         : "=a"(res) // mov the result(al) to res
@@ -33,7 +23,16 @@ unsigned short portReadWord(unsigned short port)
     return res;
 }
 
-unsigned short portWriteWord(unsigned short port, unsigned short word)
+void portWriteByte(uint16_t port, uint8_t byte)
+{
+    __asm__ volatile(
+        "outb %%al, %%dx"
+        :                      // no input
+        : "a"(byte), "d"(port) // byte to write and port
+    );
+}
+
+void portWriteWord(uint16_t port, uint16_t word)
 {
     __asm__ volatile(
         "out %%ax, %%dx"

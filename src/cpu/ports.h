@@ -3,13 +3,15 @@
 #ifndef CPU_PORTS_H_
 #define CPU_PORTS_H_
 
+#include "libc/stdint.h"
+
 /**
  * Read byte from port
  *
  * @param port The port to read from
  * @return Byte readed from the port
  */
-unsigned char portReadByte(unsigned short port);
+uint8_t portReadByte(uint16_t port);
 
 /**
  * Read word from port
@@ -17,7 +19,7 @@ unsigned char portReadByte(unsigned short port);
  * @param port The port to read from
  * @return Word readed from the port
  */
-unsigned short portReadWord(unsigned short port);
+uint16_t portReadWord(uint16_t port);
 
 /**
  * Write byte to port
@@ -25,7 +27,7 @@ unsigned short portReadWord(unsigned short port);
  * @param port The port to write to
  * @param byte Byte to write
  */
-void portWriteByte(unsigned short port, unsigned char byte);
+void portWriteByte(uint16_t port, uint8_t byte);
 
 /**
  * Write word to port
@@ -33,6 +35,6 @@ void portWriteByte(unsigned short port, unsigned char byte);
  * @param port The port to write to
  * @param word Word to write
  */
-unsigned short portWriteWord(unsigned short port, unsigned short word);
+void portWriteWord(uint16_t port, uint16_t word);
 
 #endif // CPU_PORTS_H_
