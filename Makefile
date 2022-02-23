@@ -37,19 +37,23 @@ CC_OPTION = -Werror -g -std=c11 -ffreestanding -iquote $(HOOPOE_OS_PATH)/src/
 # some kernel constant
 KERNEL_OFFSET = 0x1000
 
+.PHONY: help, clean-build
 
 all: create-bin-folders HoopoeOS.bin
 
-help:
-	@echo "make run - build and run the os"
-	@echo "make debug-run - build and run in debug mode"
-	@echo "make debug-gdb - run gdb terminal connected to the running os"
-	@echo "make debug - build the debug files"
-	@echo "make disas - open the disassemble of kernel.c"
-	@echo "make clean-build - clean all build files"
-
 run: all
 	@timeout --foreground 15 qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses
+
+# create build folders
+create-bin-folders:
+	@(ls bin >> /dev/null 2>&1 || echo "[*] Create bin folders")
+	@mkdir -p bin/boot
+	@mkdir -p bin/kernel
+	@mkdir -p bin/drivers
+	@mkdir -p bin/cpu
+	@mkdir -p bin/cpu/devices
+	@mkdir -p bin/libc
+	@mkdir -p bin/debug
 
 debug-run: debug
 	@qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses -s
@@ -64,15 +68,18 @@ debug: all $(DEBUG_BIN_PATH)/kernel.elf
 disas: bin/kernel.dis
 	@nano $^
 
-create-bin-folders:
-	@(ls bin >> /dev/null 2>&1 || echo "[*] Create bin folders")
-	@mkdir -p bin/boot
-	@mkdir -p bin/kernel
-	@mkdir -p bin/drivers
-	@mkdir -p bin/cpu
-	@mkdir -p bin/cpu/devices
-	@mkdir -p bin/libc
-	@mkdir -p bin/debug
+help:
+	@echo "make run - build and run the os"
+	@echo "make debug-run - build and run in debug mode"
+	@echo "make debug-gdb - run gdb terminal connected to the running os"
+	@echo "make debug - build the debug files"
+	@echo "make disas - open the disassemble of kernel.c"
+	@echo "make clean-build - clean all build files"
+
+# clean build folders
+clean-build: 
+	@echo "[*] Clean all builds"
+	@rm -rf bin
 
 # create image file
 HoopoeOS.bin: $(BOOT_BIN_PATH)/boot.bin $(KERNEL_BIN_PATH)/kernel.bin
@@ -128,15 +135,3 @@ bin/kernel.dis: $(KERNEL_BIN_PATH)/kernel.bin
 $(DEBUG_BIN_PATH)/kernel.elf: $(KERNEL_BIN_PATH)/kernel_entry.o $(ALL_OBJ)
 	@echo "[*] Create $@"
 	@$(LD) -o $@ -Ttext $(KERNEL_OFFSET) $^
-
-# clean build folders
-clean-build:
-	@echo "[*] Clean all builds"
-	@echo "\t* clean .bin files"
-	@find bin -name "*.bin" | xargs rm -rf
-	@echo "\t* clean .o files"
-	@find bin -name "*.o" | xargs rm -rf
-	@echo "\t* clean .dis files"
-	@find bin -name "*.dis" | xargs rm -rf
-	@echo "\t* clean .elf files"
-	@find bin -name "*.elf" | xargs rm -rf
