@@ -21,10 +21,13 @@ Experimental Tiny Operating System
 - [ ] File system
 - [ ] User Space
     - [ ] Switch to user mode
-    - [ ] Loader
     - [ ] System calls
-    - [ ] Fork and Execute
     - [ ] Shell
+- [ ] Process managment
+    - [ ] Loader
+    - [ ] Scheduling
+    - [ ] Fork and Execute
+- [ ] IPC
 - [ ] OS specific compiler
     - [ ] OS Specific Toolchain
     - [ ] libc
