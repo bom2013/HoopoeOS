@@ -6,7 +6,7 @@ Experimental Tiny Operating System
 - [x] Switch to protected mode
     - [x] GDT
 - [x] C basic kernel
-- Drivers
+- [x] Basic Drivers
     - [x] Basic IO drivers
         - [x] VGA driver
         - [x] Keyboard
