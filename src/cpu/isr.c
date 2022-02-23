@@ -124,7 +124,6 @@ void IRQHandler(ISRStackRegisters_t regs)
 {
     // send EOI to the PIC to enable further interrupt send
     sendEOI(regs.interrupt_number - 32);
-
     // call the specific interrupt handler function
     if (interruptHandlers[regs.interrupt_number] != 0)
     {

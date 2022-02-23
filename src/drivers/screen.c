@@ -105,6 +105,13 @@ int printChar(char c, char attr, int col, int row)
     {
         offset = getOffsetFromColRow(0, getRowFromOffset(offset) + 1);
     }
+    // backspace
+    else if (c == '\b')
+    {
+        offset -= 2;
+        vgaMemory[offset] = ' ';
+        vgaMemory[offset + 1] = attr;
+    }
     else
     {
         vgaMemory[offset] = c;
