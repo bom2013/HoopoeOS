@@ -29,7 +29,6 @@ isr_wrapper:
 	mov gs, ax
 	popa                    ; restore edi,esi,ebp,esp,ebx,edx,ecx,eax
 	add esp, 8              ; cleans up stack used for error code and ISR number
-	sti                     ; set interrupt flag
 	iret                    ; pops CS, EIP, EFLAGS, SS, and ESP
 
 ; IRQ wrapper
@@ -56,7 +55,6 @@ irq_wrapper:
 	mov gs, bx
 	popa                    ; restore edi,esi,ebp,esp,ebx,edx,ecx,eax
 	add esp, 8              ; cleans up stack used for error code and ISR number
-	sti                     ; set interrupt flag
 	iret                    ; pops CS, EIP, EFLAGS, SS, and ESP
 
 ; ISRs routines
@@ -113,15 +111,14 @@ global irq15
 
 ; ISRs routines implementation
 ; For each routine:
-;   1. Clear interrupt flag
-;   2. If not pushed by proccesor - push dummy error code
-;   3. Push interrupt number
-;   4. Jump to isr_wrapper
+;   1. If not pushed by proccesor - push dummy error code
+;   2. Push interrupt number
+;   3. Jump to isr_wrapper
+; Proccessor push error code: 8, 10, 11, 12, 13, 14, 17, 21, 29, 30
 
 ; isr0 - interrupt number 0 routine
 ; Division By Zero 
 isr0:
-    cli
     push byte 0
     push byte 0
     jmp isr_wrapper
@@ -129,7 +126,6 @@ isr0:
 ; isr1 - interrupt number 1 routine
 ; Debug
 isr1:
-    cli
     push byte 0
     push byte 1
     jmp isr_wrapper
@@ -137,7 +133,6 @@ isr1:
 ; isr2 - interrupt number 2 routine
 ; NMI Interrupt
 isr2:
-    cli
     push byte 0
     push byte 2
     jmp isr_wrapper
@@ -145,7 +140,6 @@ isr2:
 ; isr3 - interrupt number 3 routine
 ; Breakpoint
 isr3:
-    cli
     push byte 0
     push byte 3
     jmp isr_wrapper
@@ -153,7 +147,6 @@ isr3:
 ; isr4 - interrupt number 4 routine
 ; Overflow
 isr4:
-    cli
     push byte 0
     push byte 4
     jmp isr_wrapper
@@ -161,7 +154,6 @@ isr4:
 ; isr5 - interrupt number 5 routine
 ; Bound Range Exceeded
 isr5:
-    cli
     push byte 0
     push byte 5
     jmp isr_wrapper
@@ -169,7 +161,6 @@ isr5:
 ; isr6 - interrupt number 6 routine
 ; Invalid Opcode
 isr6:
-    cli
     push byte 0
     push byte 6
     jmp isr_wrapper
@@ -177,7 +168,6 @@ isr6:
 ; isr7 - interrupt number 7 routine
 ; Device not available
 isr7:
-    cli
     push byte 0
     push byte 7
     jmp isr_wrapper
@@ -185,14 +175,12 @@ isr7:
 ; isr8 - interrupt number 8 routine
 ; Double fault
 isr8:
-    cli
     push byte 8
     jmp isr_wrapper
 
 ; isr9 - interrupt number 9 routine
 ; Coprocessor segment overrun
 isr9:
-    cli
     push byte 0
     push byte 9
     jmp isr_wrapper
@@ -200,42 +188,36 @@ isr9:
 ; isr10 - interrupt number 10 routine
 ; Invalid TSS
 isr10:
-    cli
     push byte 10
     jmp isr_wrapper
 
 ; isr11 - interrupt number 11 routine
 ; Segment not present
 isr11:
-    cli
     push byte 11
     jmp isr_wrapper
 
 ; isr12 - interrupt number 12 routine
 ; Stack-segment fault
 isr12:
-    cli
     push byte 12
     jmp isr_wrapper
 
 ; isr13 - interrupt number 13 routine
 ; General protection fault
 isr13:
-    cli
     push byte 13
     jmp isr_wrapper
 
 ; isr14 - interrupt number 14 routine
 ; Page fault
 isr14:
-    cli
     push byte 14
     jmp isr_wrapper
 
 ; isr15 - interrupt number 15 routine
 ; Reserved
 isr15:
-    cli
     push byte 0
     push byte 15
     jmp isr_wrapper
@@ -243,7 +225,6 @@ isr15:
 ; isr16 - interrupt number 16 routine
 ; x87 FPU error
 isr16:
-    cli
     push byte 0
     push byte 16
     jmp isr_wrapper
@@ -251,15 +232,12 @@ isr16:
 ; isr17 - interrupt number 17 routine
 ; Alignment check
 isr17:
-    cli
-    push byte 0
     push byte 17
     jmp isr_wrapper
 
 ; isr18 - interrupt number 18 routine
 ; Machine check
 isr18:
-    cli
     push byte 0
     push byte 18
     jmp isr_wrapper
@@ -267,7 +245,6 @@ isr18:
 ; isr19 - interrupt number 19 routine
 ; SIMD Floating-Point Exception
 isr19:
-    cli
     push byte 0
     push byte 19
     jmp isr_wrapper
@@ -275,7 +252,6 @@ isr19:
 ; isr20 - interrupt number 20 routine
 ; Virtualization
 isr20:
-    cli
     push byte 0
     push byte 20
     jmp isr_wrapper
@@ -283,15 +259,12 @@ isr20:
 ; isr21 - interrupt number 21 routine
 ; Control Protection
 isr21:
-    cli
-    push byte 0
     push byte 21
     jmp isr_wrapper
 
 ; isr22 - interrupt number 22 routine
 ; Reserved
 isr22:
-    cli
     push byte 0
     push byte 22
     jmp isr_wrapper
@@ -299,7 +272,6 @@ isr22:
 ; isr23 - interrupt number 23 routine
 ; Reserved
 isr23:
-    cli
     push byte 0
     push byte 23
     jmp isr_wrapper
@@ -307,7 +279,6 @@ isr23:
 ; isr24 - interrupt number 24 routine
 ; Reserved
 isr24:
-    cli
     push byte 0
     push byte 24
     jmp isr_wrapper
@@ -315,7 +286,6 @@ isr24:
 ; isr25 - interrupt number 25 routine
 ; Reserved
 isr25:
-    cli
     push byte 0
     push byte 25
     jmp isr_wrapper
@@ -323,7 +293,6 @@ isr25:
 ; isr26 - interrupt number 26 routine
 ; Reserved
 isr26:
-    cli
     push byte 0
     push byte 26
     jmp isr_wrapper
@@ -331,135 +300,112 @@ isr26:
 ; isr27 - interrupt number 27 routine
 ; Reserved
 isr27:
-    cli
     push byte 0
     push byte 27
     jmp isr_wrapper
 
 ; isr28 - interrupt number 28 routine
-; Reserved
+; Hypervisor Injection Exception
 isr28:
-    cli
     push byte 0
     push byte 28
     jmp isr_wrapper
 
 ; isr29 - interrupt number 29 routine
-; Reserved
+; VMM Communication Exception
 isr29:
-    cli
-    push byte 0
     push byte 29
     jmp isr_wrapper
 
 ; isr30 - interrupt number 30 routine
-; Reserved
+; Security Exception
 isr30:
-    cli
-    push byte 0
     push byte 30
     jmp isr_wrapper
 
 ; isr31 - interrupt number 31 routine
 ; Reserved
 isr31:
-    cli
     push byte 0
     push byte 31
     jmp isr_wrapper
 
 irq0:
-	cli
 	push byte 0
 	push byte 32
 	jmp irq_wrapper
 
 irq1:
-	cli
 	push byte 1
 	push byte 33
 	jmp irq_wrapper
 
 irq2:
-	cli
 	push byte 2
 	push byte 34
 	jmp irq_wrapper
 
 irq3:
-	cli
 	push byte 3
 	push byte 35
 	jmp irq_wrapper
 
 irq4:
-	cli
 	push byte 4
 	push byte 36
 	jmp irq_wrapper
 
 irq5:
-	cli
 	push byte 5
 	push byte 37
 	jmp irq_wrapper
 
 irq6:
-	cli
 	push byte 6
 	push byte 38
 	jmp irq_wrapper
 
 irq7:
-	cli
 	push byte 7
 	push byte 39
 	jmp irq_wrapper
 
 irq8:
-	cli
 	push byte 8
 	push byte 40
 	jmp irq_wrapper
 
 irq9:
-	cli
 	push byte 9
 	push byte 41
 	jmp irq_wrapper
 
 irq10:
-	cli
 	push byte 10
 	push byte 42
 	jmp irq_wrapper
 
 irq11:
-	cli
 	push byte 11
 	push byte 43
 	jmp irq_wrapper
 
 irq12:
-	cli
 	push byte 12
 	push byte 44
 	jmp irq_wrapper
 
 irq13:
-	cli
 	push byte 13
 	push byte 45
 	jmp irq_wrapper
 
 irq14:
-	cli
 	push byte 14
 	push byte 46
 	jmp irq_wrapper
 
 irq15:
-	cli
 	push byte 15
 	push byte 47
 	jmp irq_wrapper

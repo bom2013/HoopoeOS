@@ -108,13 +108,13 @@ extern void isr26();
 // Reserved
 extern void isr27();
 
-// Reserved
+// Hypervisor Injection Exception
 extern void isr28();
 
-// Reserved
+// VMM Communication Exception
 extern void isr29();
 
-// Reserved
+// Security Exception
 extern void isr30();
 
 // Reserved
