@@ -155,7 +155,7 @@ typedef struct
 } ISRStackRegisters_t;
 
 // Interrupt handler function
-typedef void (*isr_t)(ISRStackRegisters_t);
+typedef void (*isr_t)(ISRStackRegisters_t *);
 
 /**
  * Install all the ISRs into the IDT and load it
@@ -175,13 +175,13 @@ void registerInterruptHandler(uint8_t interruptNumber, isr_t handler);
  *
  * @param regs Registers pushed by interrupt wrapper
  */
-void ISRHandler(ISRStackRegisters_t regs);
+void ISRHandler(ISRStackRegisters_t *regs);
 
 /**
  * Interrupt handler for all IRQs, call the specific handler if there is one
  *
  * @param regs Registers pushed by interrupt wrapper
  */
-void IRQHandler(ISRStackRegisters_t regs);
+void IRQHandler(ISRStackRegisters_t *regs);
 
 #endif // CPU_ISR_H_

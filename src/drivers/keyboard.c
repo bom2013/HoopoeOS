@@ -36,7 +36,7 @@ static Key popBuffer()
     return res;
 }
 
-static void keyboardInterruptHandler(ISRStackRegisters_t regs)
+static void keyboardInterruptHandler(ISRStackRegisters_t *regs)
 {
     // Read scancode from PS/2 data port
     uint8_t scancode = portReadByte(PS2_DATA_PORT);
@@ -92,6 +92,6 @@ static const char SCANCODE_PRINTABLE_CHAR[88] = {
 char toPrintableChar(Key k)
 {
     if (k.scancode != INVALID)
-        return SCANCODE_PRINTABLE_CHAR[k.scancode-1];
+        return SCANCODE_PRINTABLE_CHAR[k.scancode - 1];
     return 0;
 }

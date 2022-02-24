@@ -108,26 +108,26 @@ void registerInterruptHandler(uint8_t interruptNumber, isr_t handler)
     interruptHandlers[interruptNumber] = handler;
 }
 
-void ISRHandler(ISRStackRegisters_t regs)
+void ISRHandler(ISRStackRegisters_t *regs)
 {
 
     kprint("received interrupt: ");
     char s[3];
-    itoa(regs.interrupt_number, s, 10);
+    itoa(regs->interrupt_number, s, 10);
     kprint(s);
     kprint("\n");
-    kprint(EXCEPTION_MESSAGE[regs.interrupt_number]);
+    kprint(EXCEPTION_MESSAGE[regs->interrupt_number]);
     kprint("\n");
 }
 
-void IRQHandler(ISRStackRegisters_t regs)
+void IRQHandler(ISRStackRegisters_t *regs)
 {
     // send EOI to the PIC to enable further interrupt send
-    sendEOI(regs.interrupt_number - 32);
+    sendEOI(regs->interrupt_number - 32);
     // call the specific interrupt handler function
-    if (interruptHandlers[regs.interrupt_number] != 0)
+    if (interruptHandlers[regs->interrupt_number] != 0)
     {
-        isr_t handler = interruptHandlers[regs.interrupt_number];
+        isr_t handler = interruptHandlers[regs->interrupt_number];
         handler(regs);
     }
 }

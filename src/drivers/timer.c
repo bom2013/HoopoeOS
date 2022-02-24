@@ -7,17 +7,9 @@
 
 uint32_t timerTicks = 0;
 
-static void timerInterruptHandler(ISRStackRegisters_t regs)
+static void timerInterruptHandler(ISRStackRegisters_t *regs)
 {
     timerTicks++;
-    if (timerTicks % 20 == 0)
-    {
-        kprint("Ticks: ");
-        char asciiTicks[256];
-        itoa(timerTicks, asciiTicks, 10);
-        kprint(asciiTicks);
-        kprint("\n");
-    }
 }
 
 void initTimer(uint32_t frequency)

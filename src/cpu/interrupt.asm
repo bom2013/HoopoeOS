@@ -16,12 +16,14 @@ isr_wrapper:
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
-	
+    push esp                                ; push ISRStackRegisters_t *regs
+
     ; Call C handler
     cld                     ; clear DF to match sysV ABI to call c function
 	call ISRHandler         ; call ISRHandler
 	
     ; Restore state
+    pop eax                 ; pop ISRStackRegisters_t *regs
 	pop eax                 ; restore DS
 	mov ds, ax
 	mov es, ax
@@ -42,13 +44,15 @@ irq_wrapper:
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
-	
+	push esp                                ; push ISRStackRegisters_t *regs
+
     ; Call C handler
     cld                     ; clear DF to match sysV ABI to call c function
 	call IRQHandler         ; call ISRHandler
 	
     ; Restore state
-	pop ebx                 ; restore DS
+	pop ebx                 ; pop ISRStackRegisters_t *regs
+    pop ebx                 ; restore DS
 	mov ds, bx
 	mov es, bx
 	mov fs, bx
