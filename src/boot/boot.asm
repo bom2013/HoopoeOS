@@ -5,6 +5,7 @@
 
 ; kernel load offset
 KERNEL_OFFSET equ 0x1000
+KERNEL_ALLOCATED_SIZE_ON_DISK equ 30
 
 boot_start:
     ; save boot drive from dl (BIOS put it there) to global var for later use
@@ -48,9 +49,9 @@ load_kernel:
     call rm_wait
 
     ; load kernel from disk
-    mov bx, KERNEL_OFFSET ; destination
-    mov dh, 30            ; number of section to read
-    mov dl, [BOOT_DRIVE]  ; drive number
+    mov bx, KERNEL_OFFSET                   ; destination
+    mov dh, KERNEL_ALLOCATED_SIZE_ON_DISK   ; number of section to read
+    mov dl, [BOOT_DRIVE]                    ; drive number
     call rm_read_sectors
     
     ret

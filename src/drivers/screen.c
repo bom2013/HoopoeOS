@@ -5,13 +5,18 @@
 
 // Internals functions
 int printChar(char c, char attr, int col, int row);
+
 // Offset utils
 int getOffsetFromColRow(int col, int row);
 int getRowFromOffset(int offset);
 int getColFromOffset(int offset);
+
 // Cursor utils
 int getCursorOffset();
 void setCursorOffset(int offset);
+
+const int CURSOR_COLUMN = -1;
+const int CURSOR_ROW = -1;
 
 int kprint(const char *message)
 {
@@ -20,7 +25,7 @@ int kprint(const char *message)
 
 int kprintWithAttr(const char *message, char attr)
 {
-    return kprintAt(message, attr, -1, -1);
+    return kprintAt(message, attr, CURSOR_COLUMN, CURSOR_ROW);
 }
 
 int kprintAt(const char *message, char attr, int col, int row)
