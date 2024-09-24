@@ -4,11 +4,26 @@
 #include "drivers/screen.h"
 #include "libc/stddef.h"
 #include "libc/stdbool.h"
+#include "cpu/devices/serial.h"
+#include "utils/logging.h"
+
+static bool init_kernel()
+{
+    LOG("Test");
+    initTimer(50);
+    initKeyboard();
+    kclear();
+    kprint("[*] Initialize serial\n");
+    if (!init_serial(SERIAL_PORT_COM1))
+    {
+        kprint("[Error] Fail to initialize serial port");
+        return false;
+    }
+    return true;
+}
 
 void kmain()
 {
-    kclear();
-    kprint("Enter kmain...\n");
     while (true)
     {
         Key k = readChar();
@@ -17,14 +32,21 @@ void kmain()
         c[1] = 0;
         kprint(c);
     }
-    kprint("\nend\n");
+    kprint("\n[*] kmain() end\n");
 }
 
 void _kmain()
 {
     ISRInstall();
     __asm__ __volatile__("sti");
-    initTimer(50);
-    initKeyboard();
+    if (!init_kernel())
+    {
+        kprint("[Error] Fail to initialize kernel");
+        return;
+    }
+    kprint("[*] Enter kmain...\n");
+    wait(50);
+    kclear();
+
     kmain();
 }

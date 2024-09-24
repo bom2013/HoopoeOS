@@ -43,7 +43,10 @@ KERNEL_OFFSET = 0x1000
 all: create-bin-folders HoopoeOS.bin
 
 run: all
-	@timeout --foreground 15 qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses
+	@qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses -serial file:serial.log
+
+run-timeout: all
+	@timeout --foreground 15 qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses -serial file:serial.log
 
 # create build folders
 create-bin-folders:
