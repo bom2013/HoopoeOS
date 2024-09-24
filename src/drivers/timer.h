@@ -46,6 +46,8 @@
 #define PIT_MODE_REGISTER_BINARY 0x0 // 16-bit binary
 #define PIT_MODE_REGISTER_BCD 0x1    // four-digit BCD
 
+#define TIMER_IRQ IRQ0_GATE_NUMBER
+
 /**
  * Init the PIT
  *

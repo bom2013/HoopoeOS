@@ -3,6 +3,8 @@
 #ifndef DRIVERS_KEYBOARD_H_
 #define DRIVERS_KEYBOARD_H_
 
+#define KEYBOARD_IRQ IRQ1_GATE_NUMBER
+
 #define KEYBOARD_BUFFER_SIZE 256
 
 typedef enum

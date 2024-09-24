@@ -73,9 +73,9 @@ BEGIN_PM:
 
 ; Global variables
 BOOT_DRIVE db 0
-MSG_REAL_MODE db "Started in 16 - bit Real Mode... " , 0
-MSG_PROT_MODE db "Successfully landed in 32 - bit Protected Mode" , 0
-MSG_KERN_MODE db "Load kernel to memory...", 0
+MSG_REAL_MODE db "Started in 16 - bit Real Mode... ", 0xA, 0xD, 0
+MSG_PROT_MODE db "Successfully landed in 32 - bit Protected Mode", 0xA, 0xD, 0
+MSG_KERN_MODE db "Load kernel to memory...", 0xA, 0xD, 0
 
 ; Fill (510 - size of previous code) byte with zero
 times 510-($-$$) db 0

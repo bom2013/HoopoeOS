@@ -26,10 +26,22 @@ void remapPIC(unsigned char masterVectorOffset, unsigned char slaveVectorOffset)
 
 void sendEOI(unsigned char irqNumber)
 {
+    // Master - 0-7, Slave - 8-15
+    const char NUMBER_OF_MASTER_IRQ = 8;
+    const char NUMBER_OF_IRQ = 16;
+
+    // bound check
+    if (irqNumber > NUMBER_OF_IRQ)
+    {
+        // TODO: Add log for error
+        return;
+    }
+
     // if irq is from slave we send also to the slave PIC
-    if (irqNumber >= 8)
+    if (irqNumber >= NUMBER_OF_MASTER_IRQ)
     {
         portWriteByte(SLAVE_PIC_COMMAND_PORT, PIC_EOI);
     }
+
     portWriteByte(MASTER_PIC_COMMAND_PORT, PIC_EOI);
 }

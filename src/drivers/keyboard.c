@@ -51,7 +51,7 @@ static void keyboardInterruptHandler(ISRStackRegisters_t *regs)
 void initKeyboard()
 {
     // register keyboardInterruptHandler to handle IRQ1
-    registerInterruptHandler(IRQ1_GATE_NUMBER, keyboardInterruptHandler);
+    registerInterruptHandler(KEYBOARD_IRQ, keyboardInterruptHandler);
 }
 
 Key readChar()

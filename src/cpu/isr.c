@@ -6,6 +6,8 @@
 #include "libc/stddef.h"
 #include "libc/stdlib.h"
 
+#define PIC_START_OFFSET 0x20
+
 isr_t interruptHandlers[256];
 
 const char *EXCEPTION_MESSAGE[] = {
@@ -79,7 +81,7 @@ void ISRInstall()
     setIDTGateDescriptor(31, (uint32_t)isr31);
 
     // remap PIC
-    remapPIC(0x20, 0x28);
+    remapPIC(PIC_START_OFFSET, 0x28);
 
     // install IRQs
     setIDTGateDescriptor(IRQ0_GATE_NUMBER, (uint32_t)irq0);
@@ -110,7 +112,6 @@ void registerInterruptHandler(uint8_t interruptNumber, isr_t handler)
 
 void ISRHandler(ISRStackRegisters_t *regs)
 {
-
     kprint("received interrupt: ");
     char s[3];
     itoa(regs->interrupt_number, s, 10);
@@ -122,12 +123,12 @@ void ISRHandler(ISRStackRegisters_t *regs)
 
 void IRQHandler(ISRStackRegisters_t *regs)
 {
-    // send EOI to the PIC to enable further interrupt send
-    sendEOI(regs->interrupt_number - 32);
     // call the specific interrupt handler function
-    if (interruptHandlers[regs->interrupt_number] != 0)
+    if (interruptHandlers[regs->interrupt_number] != NULL)
     {
         isr_t handler = interruptHandlers[regs->interrupt_number];
         handler(regs);
     }
+    // send EOI to the PIC to enable further interrupt send
+    sendEOI(regs->interrupt_number - PIC_START_OFFSET);
 }

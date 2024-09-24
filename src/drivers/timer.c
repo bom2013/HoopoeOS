@@ -15,7 +15,7 @@ static void timerInterruptHandler(ISRStackRegisters_t *regs)
 void initTimer(uint32_t frequency)
 {
     // register timerInterruptHandler to handle IRQ0
-    registerInterruptHandler(IRQ0_GATE_NUMBER, timerInterruptHandler);
+    registerInterruptHandler(TIMER_IRQ, timerInterruptHandler);
 
     // set PIC Divider
     uint32_t divisor = PIT_BASE_FREQUENCY / frequency;
