@@ -1,3 +1,5 @@
+include test/Makefile
+
 # src path prefix
 BOOT_SRC_PATH = src/boot
 KERNEL_SRC_PATH = src/kernel
@@ -48,6 +50,25 @@ run: all
 run-timeout: all
 	@timeout --foreground 15 qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses -serial file:serial.log
 
+run-debug: debug
+	@qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses -s
+
+debug-gdb: $(DEBUG_BIN_PATH)/kernel.elf
+	@gdb -q \
+		-ex "target remote localhost:1234" \
+		-ex "symbol-file $(DEBUG_BIN_PATH)/kernel.elf"
+
+debug: all $(DEBUG_BIN_PATH)/kernel.elf
+
+help:
+	@echo "make run - build and run the os"
+	@echo "make run-timeout - build and run the os with timeout"
+	@echo "make run-debug - build and run in debug mode"
+	@echo "make debug-gdb - run gdb terminal connected to the running os"
+	@echo "make debug - build the debug files"
+	@echo "make disas - open the disassemble of kernel.c"
+	@echo "make clean-build - clean all build files"
+
 # create build folders
 create-bin-folders:
 	@(ls bin >> /dev/null 2>&1 || echo "[*] Create bin folders")
@@ -59,26 +80,9 @@ create-bin-folders:
 	@mkdir -p bin/libc
 	@mkdir -p bin/debug
 
-debug-run: debug
-	@qemu-system-x86_64 -fda bin/HoopoeOS.bin -curses -s
-
-debug-gdb: $(DEBUG_BIN_PATH)/kernel.elf
-	@gdb -q \
-		-ex "target remote localhost:1234" \
-		-ex "symbol-file $(DEBUG_BIN_PATH)/kernel.elf"
-
-debug: all $(DEBUG_BIN_PATH)/kernel.elf
 
 disas: bin/kernel.dis
 	@nano $^
-
-help:
-	@echo "make run - build and run the os"
-	@echo "make debug-run - build and run in debug mode"
-	@echo "make debug-gdb - run gdb terminal connected to the running os"
-	@echo "make debug - build the debug files"
-	@echo "make disas - open the disassemble of kernel.c"
-	@echo "make clean-build - clean all build files"
 
 # clean build folders
 clean-build: 
