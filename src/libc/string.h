@@ -11,6 +11,7 @@ void *memcpy(void *destination, const void *source, int num);
 // Functions - Other
 char *strrev(char *str);
 size_t strlen(const char *str);
+char *strcat(char *dest, const char *src);
 
 // Types
 typedef long unsigned int size_t;

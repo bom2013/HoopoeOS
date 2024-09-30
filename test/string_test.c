@@ -3,6 +3,9 @@
 
 DEFAULT_FUNCTIONS();
 
+#define TEST_BUFFER_SIZE 128
+char test_buffer[TEST_BUFFER_SIZE];
+
 void test_strlen()
 {
     TEST_ASSERT_EQUAL_MESSAGE(0, strlen(""), "Empty string");
@@ -12,12 +15,38 @@ void test_strlen()
 
 void test_strrev()
 {
-    char normal_string[128] = "Test";
-    TEST_ASSERT_EQUAL_STRING_MESSAGE("tseT", strrev(normal_string), "Normal string");
-    char empty_string[128] = "";
-    TEST_ASSERT_EQUAL_STRING_MESSAGE("", strrev(empty_string), "Empty string");
-    char one_char_string[128] = "A";
-    TEST_ASSERT_EQUAL_STRING_MESSAGE("A", strrev(one_char_string), "One character");
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "Test");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("tseT", strrev(test_buffer), "Normal string");
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("", strrev(test_buffer), "Empty string");
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "A");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("A", strrev(test_buffer), "One character");
+}
+
+void test_strcat()
+{
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "Hello");
+    char *result = strcat(test_buffer, ", World!");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("Hello, World!", test_buffer, "Buffer should contain the concatenated result");
+    TEST_ASSERT_EQUAL_PTR_MESSAGE(&test_buffer, result, "strcat should return destination ptr");
+
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "Hello");
+    result = strcat(test_buffer, "");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("Hello", test_buffer, "Buffer should be unchanged when adding empty string");
+    TEST_ASSERT_EQUAL_PTR_MESSAGE(&test_buffer, result, "strcat should return destination ptr");
+
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "");
+    result = strcat(test_buffer, "");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("", test_buffer, "Adding empty string to empty string");
+    TEST_ASSERT_EQUAL_PTR_MESSAGE(&test_buffer, result, "strcat should return destination ptr");
+
+    reset_buffer(test_buffer, TEST_BUFFER_SIZE, "This");
+    strcat(test_buffer, " is");
+    strcat(test_buffer, " a");
+    strcat(test_buffer, " great");
+    strcat(test_buffer, " test");
+    TEST_ASSERT_EQUAL_STRING_MESSAGE("This is a great test", test_buffer, "Adding empty string to empty string");
+    TEST_ASSERT_EQUAL_PTR_MESSAGE(&test_buffer, result, "strcat should return destination ptr");
 }
 
 void test_memcpy()
@@ -35,6 +64,7 @@ int main(void)
 
     RUN_TEST(test_strlen);
     RUN_TEST(test_strrev);
+    RUN_TEST(test_strcat);
     RUN_TEST(test_memcpy);
 
     return UNITY_END();
