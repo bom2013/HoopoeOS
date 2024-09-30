@@ -1,29 +1,30 @@
-PATHR = test/bin/results/
-PATHT = test/
-PATHB = test/bin/
-PATHU = test/unity/
+TEST_PATH = test/
+UNITY_SRC_PATH = test/unity/
+TEST_LIBC_SRC_PATH = src/libc
+TEST_BIN_PATH = test/bin/
+TEST_RESULT_PATH = test/bin/results/
+TEST_LIBC_BIN_PATH = test/bin/libc
 
-BUILD_PATHS = $(PATHB) $(PATHR)
+BUILD_PATHS = $(TEST_BIN_PATH) $(TEST_RESULT_PATH) $(TEST_LIBC_BIN_PATH)
 
-SRCT = $(wildcard $(PATHT)*.c)
-SRCU = $(wildcard $(PATHU)*.c)
-CC_PREFIX = /usr/local/i386elfgcc/bin/i386-elf-
+TEST_SRC = $(wildcard $(TEST_PATH)*.c)
+UNITY_SRC = $(wildcard $(UNITY_SRC_PATH)*.c)
+TEST_LIBC_SRC = $(wildcard $(TEST_LIBC_SRC_PATH)/*.c)
+TEST_LIBC_OBJ = $(patsubst $(TEST_LIBC_SRC_PATH)%.c,$(TEST_LIBC_BIN_PATH)%.o,$(TEST_LIBC_SRC))
 
-
-# COMPILE=$(CC_PREFIX)gcc
 COMPILE=gcc
+TEST_CC = -Werror -g -std=c11 -ffreestanding 
 MKDIR = mkdir -p
 RM = rm -rf 
 
-PASSED = `grep -s PASS: $(PATHR)*.txt`
-FAIL = `grep -s FAIL: $(PATHR)*.txt`
-IGNORE = `grep -s IGNORE: $(PATHR)*.txt`
-PASSED_COUNT = `grep -s -c PASS: $(PATHR)*.txt`
-FAIL_COUNT = `grep -s -c FAIL: $(PATHR)*.txt`
-IGNORE_COUNT = `grep -s -c IGNORE: $(PATHR)*.txt`
+PASSED = `grep -s :PASS $(TEST_RESULT_PATH)*.txt`
+FAIL = `grep -s :FAIL $(TEST_RESULT_PATH)*.txt`
+IGNORE = `grep -s :IGNORE $(TEST_RESULT_PATH)*.txt`
+PASSED_COUNT = `grep -s :PASS $(TEST_RESULT_PATH)*.txt | wc -l`
+FAIL_COUNT = `grep -s :FAIL $(TEST_RESULT_PATH)*.txt | wc -l`
+IGNORE_COUNT = `grep -s :IGNORE $(TEST_RESULT_PATH)*.txt | wc -l`
 
-RESULTS = $(patsubst $(PATHT)%_test.c,$(PATHR)%_result.txt,$(SRCT))
-
+RESULTS = $(patsubst $(TEST_PATH)%_test.c,$(TEST_RESULT_PATH)%_result.txt,$(TEST_SRC))
 
 test: clean $(BUILD_PATHS) $(RESULTS)
 	@echo "-----------------------\n\tIGNORES\n-----------------------"
@@ -36,17 +37,23 @@ test: clean $(BUILD_PATHS) $(RESULTS)
 	@echo "PASSED: $(PASSED_COUNT) FAIL: $(FAIL_COUNT) IGNORE: $(IGNORE_COUNT)"
 	@echo "-----------------------\n"
 
-$(PATHR)%_result.txt: $(PATHB)%.out
+$(TEST_RESULT_PATH)%_result.txt: $(TEST_BIN_PATH)%.out
 	@./$< > $@ 2>&1 || true
 
-$(PATHB)%.out: $(PATHT)%_test.c
-	@$(COMPILE) $(SRCU) -DTEST -Werror -g -std=c11 -ffreestanding -iquote ./src/ $< -o $@
+$(TEST_LIBC_BIN_PATH)/%.o: $(TEST_LIBC_SRC_PATH)/%.c
+	@$(COMPILE) $(TEST_CC) -c $< -o $@ 
 
-$(PATHB):
-	@$(MKDIR) $(PATHB)
+$(TEST_BIN_PATH)%.out: $(TEST_PATH)%_test.c $(TEST_LIBC_OBJ)  
+	@$(COMPILE) $(UNITY_SRC) $< $(TEST_LIBC_OBJ) -DTEST $(TEST_CC) -iquote ./src/ -o $@
 
-$(PATHR):
-	@$(MKDIR) $(PATHR)
+$(TEST_BIN_PATH):
+	@$(MKDIR) $(TEST_BIN_PATH)
+
+$(TEST_RESULT_PATH):
+	@$(MKDIR) $(TEST_RESULT_PATH)
+
+$(TEST_LIBC_BIN_PATH):
+	@$(MKDIR) $(TEST_LIBC_BIN_PATH)
 
 clean:
-	@$(RM) $(PATHB)
+	@$(RM) $(TEST_BIN_PATH)
