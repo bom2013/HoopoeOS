@@ -20,9 +20,11 @@ RM = rm -rf
 PASSED = `grep -s :PASS $(TEST_RESULT_PATH)*.txt`
 FAIL = `grep -s :FAIL $(TEST_RESULT_PATH)*.txt`
 IGNORE = `grep -s :IGNORE $(TEST_RESULT_PATH)*.txt`
+
 PASSED_COUNT = `grep -s :PASS $(TEST_RESULT_PATH)*.txt | wc -l`
 FAIL_COUNT = `grep -s :FAIL $(TEST_RESULT_PATH)*.txt | wc -l`
 IGNORE_COUNT = `grep -s :IGNORE $(TEST_RESULT_PATH)*.txt | wc -l`
+CRASH_COUNT = `grep -s "(core dumped)" $(TEST_RESULT_PATH)*.txt | wc -l`
 
 RESULTS = $(patsubst $(TEST_PATH)%_test.c,$(TEST_RESULT_PATH)%_result.txt,$(TEST_SRC))
 
@@ -34,7 +36,7 @@ test: clean-test $(BUILD_PATHS) $(RESULTS)
 	@echo "\n-----------------------\n\tPASSED\n-----------------------"
 	@echo "$(PASSED)"
 	@echo "\n-----------------------"
-	@echo "PASSED: $(PASSED_COUNT) FAIL: $(FAIL_COUNT) IGNORE: $(IGNORE_COUNT)"
+	@echo "PASSED: $(PASSED_COUNT) FAIL: $(FAIL_COUNT) IGNORE: $(IGNORE_COUNT) CRASH: $(CRASH_COUNT)"
 	@echo "-----------------------\n"
 
 $(TEST_RESULT_PATH)%_result.txt: $(TEST_BIN_PATH)%.out
