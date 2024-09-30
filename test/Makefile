@@ -26,7 +26,7 @@ IGNORE_COUNT = `grep -s :IGNORE $(TEST_RESULT_PATH)*.txt | wc -l`
 
 RESULTS = $(patsubst $(TEST_PATH)%_test.c,$(TEST_RESULT_PATH)%_result.txt,$(TEST_SRC))
 
-test: clean $(BUILD_PATHS) $(RESULTS)
+test: clean-test $(BUILD_PATHS) $(RESULTS)
 	@echo "-----------------------\n\tIGNORES\n-----------------------"
 	@echo "$(IGNORE)"
 	@echo "\n-------------------------\n\tFAILURES\n-------------------------"
@@ -55,5 +55,5 @@ $(TEST_RESULT_PATH):
 $(TEST_LIBC_BIN_PATH):
 	@$(MKDIR) $(TEST_LIBC_BIN_PATH)
 
-clean:
+clean-test:
 	@$(RM) $(TEST_BIN_PATH)
