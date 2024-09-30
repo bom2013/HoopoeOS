@@ -31,9 +31,10 @@ bool init_serial(const uint16_t device);
 
 int serial_received();
 
-char read_serial();
-int is_transmit_empty();
+char serial_read();
+int serial_is_transmit_empty();
 
-void write_serial(char a);
+void serial_write(char c);
+void serial_write_string(const char *str);
 
 #endif // CPU_DEVICES_SERIAL_H_

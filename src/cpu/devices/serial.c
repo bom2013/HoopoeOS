@@ -51,22 +51,31 @@ int serial_received()
     return portReadByte(PORT + 5) & 1;
 }
 
-char read_serial()
+char serial_read()
 {
     while (serial_received() == 0)
         ;
     return portReadByte(PORT);
 }
 
-int is_transmit_empty()
+int serial_is_transmit_empty()
 {
     return portReadByte(PORT + 5) & 0x20;
 }
 
-void write_serial(char a)
+void serial_write(char c)
 {
-    while (is_transmit_empty() == 0)
+    while (serial_is_transmit_empty() == 0)
         ;
 
-    portWriteByte(PORT, a);
+    portWriteByte(PORT, c);
+}
+
+void serial_write_string(const char *str)
+{
+    while (*str)
+    {
+        serial_write(*str);
+        str++;
+    }
 }
