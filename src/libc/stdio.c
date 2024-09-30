@@ -52,20 +52,31 @@ int vsprintf(char *result, const char *format, va_list arg)
             break;
         case 's':
             temp_str = va_arg(arg, char *);
-            strcat(result_ptr, temp_str);
-            result_ptr += strlen(temp_str);
+            // we couldn't use strcat because we can't be sure result_ptr is null terminated
+            while (*temp_str)
+            {
+                *(result_ptr++) = *(temp_str++);
+            }
             break;
         case 'd':
-            strcat(result_ptr, itoa(va_arg(arg, int), int_string, 10));
-            result_ptr += strlen(int_string);
+            // we couldn't use strcat because we can't be sure result_ptr is null terminated
+            temp_str = itoa(va_arg(arg, int), int_string, 10);
+            while (*temp_str)
+            {
+                *(result_ptr++) = *(temp_str++);
+            }
             break;
         case 'c':
             *result_ptr = va_arg(arg, int);
             result_ptr++;
             break;
         case 'x':
-            strcat(result_ptr, itoa(va_arg(arg, int), hex_string, 16));
-            result_ptr += strlen(hex_string);
+            // we couldn't use strcat because we can't be sure result_ptr is null terminated
+            temp_str = itoa(va_arg(arg, int), hex_string, 16);
+            while (*temp_str)
+            {
+                *(result_ptr++) = *(temp_str++);
+            }
             break;
         default:
             return FAIL;
