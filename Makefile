@@ -36,6 +36,7 @@ CC_PREFIX = /usr/local/i386elfgcc/bin/i386-elf-
 CC = $(CC_PREFIX)gcc
 LD = $(CC_PREFIX)ld
 CC_OPTION = -Werror -g -std=c11 -ffreestanding -iquote ./src/
+DEBUG_OPTION =-DSERIAL_DEBUG
 
 # some kernel constant
 KERNEL_OFFSET = 0x1000
@@ -112,7 +113,7 @@ $(KERNEL_BIN_PATH)/kernel_entry.o: $(KERNEL_SRC_PATH)/kernel_entry.asm
 # compile kernel c files
 $(KERNEL_BIN_PATH)/%.o: $(KERNEL_SRC_PATH)/%.c
 	@echo "[*] Compile kernel c files ($^)"
-	@$(CC) $(CC_OPTION) -c $< -o $@ 
+	@$(CC) $(CC_OPTION) $(DEBUG_OPTION) -c $< -o $@ 
 
 # compile drivers c files
 $(DRIVERS_BIN_PATH)/%.o: $(DRIVERS_SRC_PATH)/%.c
