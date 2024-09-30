@@ -1,13 +1,7 @@
 #include "Unity/unity_helper.h"
 #include "libc/stdlib.h"
 
-void setUp()
-{
-}
-
-void tearDown()
-{
-}
+DEFAULT_FUNCTIONS()
 
 void test_itoa()
 {

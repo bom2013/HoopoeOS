@@ -1,13 +1,7 @@
 #include "Unity/unity_helper.h"
 #include "libc/string.h"
 
-void setUp()
-{
-}
-
-void tearDown()
-{
-}
+DEFAULT_FUNCTIONS();
 
 void test_strlen()
 {
