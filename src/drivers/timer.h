@@ -62,4 +62,6 @@ void initTimer(uint32_t frequency);
  */
 void wait(uint32_t ticks);
 
+uint32_t get_current_tick();
+
 #endif // DRIVERS_TIMER_H_

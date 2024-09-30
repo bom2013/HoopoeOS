@@ -35,3 +35,8 @@ void wait(uint32_t ticks)
     {
     };
 }
+
+uint32_t get_current_tick()
+{
+    return timerTicks;
+}
