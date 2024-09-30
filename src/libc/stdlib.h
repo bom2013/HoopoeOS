@@ -7,8 +7,6 @@
 int atoi(const char *str);
 char *itoa(int value, char *str, int base);
 
-// Macro constants
-#define NULL 0
 #define EXIT_SUCCESS 0
 #define EXIT_FAILURE 1
 

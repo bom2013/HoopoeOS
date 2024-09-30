@@ -12,9 +12,6 @@ void *memcpy(void *destination, const void *source, int num);
 char *strrev(char *str);
 size_t strlen(const char *str);
 
-// Macro constants
-#define NULL 0
-
 // Types
 typedef long unsigned int size_t;
 
