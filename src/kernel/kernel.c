@@ -5,11 +5,10 @@
 #include "libc/stddef.h"
 #include "libc/stdbool.h"
 #include "cpu/devices/serial.h"
-#include "utils/logging.h"
+#include "logging.h"
 
 static bool init_kernel()
 {
-    LOG("Test");
     initTimer(50);
     initKeyboard();
     kclear();
@@ -24,6 +23,7 @@ static bool init_kernel()
 
 void kmain()
 {
+    LOG("kmain() start!");
     while (true)
     {
         Key k = readChar();
@@ -32,7 +32,7 @@ void kmain()
         c[1] = 0;
         kprint(c);
     }
-    kprint("\n[*] kmain() end\n");
+    LOG("\n[*] kmain() end\n");
 }
 
 void _kmain()
@@ -41,7 +41,8 @@ void _kmain()
     __asm__ __volatile__("sti");
     if (!init_kernel())
     {
-        kprint("[Error] Fail to initialize kernel");
+        // This is best effort, as screen may not work
+        ERROR("Fail to initialize kernel");
         return;
     }
     kprint("[*] Enter kmain...\n");
